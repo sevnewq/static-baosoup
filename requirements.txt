@@ -1,0 +1,12 @@
+# BaoSoup 靜態網站 - Python 依賴
+# 此專案主要使用 Python 標準庫
+# 本地開發伺服器 (server.py) 不需要額外依賴
+
+# Python 版本要求: 3.7+
+
+# 可選: AWS CLI (用於部署到 AWS S3 + CloudFront)
+# pip install awscli-local  # 或 aws-cli
+
+# 可選: 開發工具
+# pip install black  # 程式碼格式化
+# pip install pylint  # 程式碼檢查

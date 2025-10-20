@@ -1,0 +1,91 @@
+{
+  "cloudfront_config": {
+    "origin": {
+      "domain_name": "your-bucket-name.s3.amazonaws.com",
+      "origin_path": "",
+      "s3_origin_config": {
+        "origin_access_identity": "origin-access-identity/cloudfront/YOUR-OAI-ID"
+      }
+    },
+    "default_cache_behavior": {
+      "allowed_methods": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+      ],
+      "cached_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "target_origin_id": "S3Origin",
+      "forwarded_values": {
+        "query_string": false,
+        "cookies": {
+          "forward": "none"
+        },
+        "headers": [
+          "Host"
+        ]
+      },
+      "viewer_protocol_policy": "redirect-to-https",
+      "min_ttl": 0,
+      "default_ttl": 3600,
+      "max_ttl": 86400
+    },
+    "cache_behaviors": [
+      {
+        "path_pattern": "/index.html",
+        "allowed_methods": [
+          "GET",
+          "HEAD"
+        ],
+        "cached_methods": [
+          "GET",
+          "HEAD"
+        ],
+        "target_origin_id": "S3Origin",
+        "viewer_protocol_policy": "redirect-to-https",
+        "min_ttl": 0,
+        "default_ttl": 300,
+        "max_ttl": 900,
+        "forwarded_values": {
+          "query_string": false,
+          "cookies": {
+            "forward": "none"
+          }
+        }
+      },
+      {
+        "path_pattern": "/assets/*",
+        "allowed_methods": [
+          "GET",
+          "HEAD"
+        ],
+        "cached_methods": [
+          "GET",
+          "HEAD"
+        ],
+        "target_origin_id": "S3Origin",
+        "viewer_protocol_policy": "https-only",
+        "min_ttl": 0,
+        "default_ttl": 31536000,
+        "max_ttl": 31536000,
+        "forwarded_values": {
+          "query_string": false,
+          "cookies": {
+            "forward": "none"
+          }
+        }
+      }
+    ],
+    "error_caching_min_ttl": 300,
+    "enabled": true
+  },
+  "deployment_steps": [
+    "1. Replace 'your-bucket-name' with your actual S3 bucket name",
+    "2. Replace 'YOUR-OAI-ID' with your CloudFront Origin Access Identity",
+    "3. Run: aws s3 sync ./static s3://your-bucket-name/ --delete",
+    "4. Create CloudFront distribution via AWS Console or CLI",
+    "5. Update CloudFront with error pages (403, 404) -> /index.html for SPA routing"
+  ]
+}
